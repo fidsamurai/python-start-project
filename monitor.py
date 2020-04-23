@@ -1,5 +1,5 @@
 #!/usr/bin/env python3.7
-
+#Module psutil needs to be installed via pip3 first.
 #Python script to Monitor Server Resources.
 
 import psutil
@@ -18,8 +18,7 @@ if mem_thresh >= mem.available:
 
 partition1 = '/'
 disk1 = psutil.disk_usage(partition1)
-#disk1_percent = disk1.return(percent)
 disk_thresh = 85.0
 
-if disk_thresh >= disk1[3]:
+if disk_thresh <= disk1[3]:
     print("Root volume usage warning", disk1[3], "% used")
