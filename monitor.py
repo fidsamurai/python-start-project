@@ -4,6 +4,7 @@
 
 import time
 import psutil
+import smtplib
 
 cpu_thresh = 50.0
 cpu_pct = psutil.cpu_percent(interval=1)
@@ -32,9 +33,8 @@ def net_usage(inf = "eth0"):   #change the inf variable according to the interfa
   net_in_ps2 = psutil.net_io_counters(pernic=True, nowrap=True)[inf]
   net_in_2 = net_in_ps2.bytes_recv
   net_out_2 = net_in_ps2.bytes_sent
-  net_in_res = round((net_in_2 - net_in_1) /1024 /1024, 3)
-  net_out_res = round((net_out_2 - net_out_1) /1024 /1024, 3)
-  print(f"Current net-usage:\nIN: {net_in_res} MB/s, OUT: {net_out_res} MB/s")
+  net_in_res = round((net_in_2 - net_in_1) /1024 /1024, 2)
+  net_out_res = round((net_out_2 - net_out_1) /1024 /1024, 2)
   net_in_thresh = 1.5
   net_out_thresh = 1.5
   if net_in_res <= net_in_thresh:

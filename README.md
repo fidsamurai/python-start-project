@@ -1,1 +1,1 @@
-#Python first projects requires python3
+#Requires python3 >= 3.6
