@@ -23,7 +23,7 @@ disk1 = psutil.disk_usage(partition1)
 disk_thresh = 85.0
 
 if disk_thresh <= disk1[3]:
-    print("Root volume usage warning", disk1[3], "% used")
+    disk_alert = print("Root volume usage warning", disk1[3], "% used")
 
 def net_usage(inf = "eth0"):   #change the inf variable according to the interface
   net_in_ps1 = psutil.net_io_counters(pernic=True, nowrap=True)[inf]
@@ -38,8 +38,19 @@ def net_usage(inf = "eth0"):   #change the inf variable according to the interfa
   net_in_thresh = 1.5
   net_out_thresh = 1.5
   if net_in_res <= net_in_thresh:
-     print(f"Current net-usage:\nIN: {net_in_res} MB/s")
+     net_in_alert = print(f"Current net-usage:\nIN: {net_in_res} MB/s")
   if net_out_res <= net_out_thresh:
-     print(f"Current net-usage:\nOUT: {net_out_res} MB/s")
+     net_out_alert = print(f"Current net-usage:\nOUT: {net_out_res} MB/s")
 
 net_usage()
+
+def alerts(disk_alert,net_in_alert,net_out_alert):
+    smtp_deets = smtplib.SMTP_TLS( 'smtp.gmail.com', 587)
+    sender = 'faga@linuxlab.org'
+    receivers = ['faga@linuxlab.org']
+    message = ['disk_alert','net_in_alert','net_out_alert']
+    try:
+        server.login(sender, "redhat237")
+        server.sendmail(sender, receivers, message)
+    except Exception as e:
+        raise
