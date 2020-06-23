@@ -45,11 +45,11 @@ def net_usage(inf = "eth0"):   #change the inf variable according to the interfa
   net_in_thresh = 1.5
   net_out_thresh = 1.5
   if net_in_res <= net_in_thresh:
-      net_in_alert = f"Current net-usage:\nIN:", net_in_res, "MB/s"
+      net_in_alert = f"Current net-usage:IN:", net_in_res, "MB/s"
   else:
       net_in_alert = ""
   if net_out_res <= net_out_thresh:
-     net_out_alert = f"Current net-usage:\nOUT:", net_out_res, "MB/s"
+     net_out_alert = f"Current net-usage:OUT:", net_out_res, "MB/s"
   else:
       net_out_alert = "" 
 net_usage()
@@ -77,12 +77,14 @@ if net_out_alert == "":
 else:
     message_list.append(net_out_alert)
 
-print(message_list)
-def alerts():
+print(str(message_list))
+if message_list == "":
+  pass
+else:
+  def alerts():
     sender = 'faga@linuxlab.org'
     receivers = ['faga@linuxlab.org']
     server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
     server.login(sender, "redhat237")
     server.sendmail(sender, receivers, str(message_list))
-
 alerts()
