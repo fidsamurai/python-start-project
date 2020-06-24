@@ -78,13 +78,13 @@ else:
     message_list.append(net_out_alert)
 
 print(str(message_list))
-if message_list == "":
-  pass
-else:
-  def alerts():
-    sender = 'faga@linuxlab.org'
-    receivers = ['faga@linuxlab.org']
-    server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-    server.login(sender, "redhat237")
-    server.sendmail(sender, receivers, str(message_list))
-alerts()
+#if message_list == "":
+#  pass
+#else:
+#  def alerts():
+#    sender = 'faga@linuxlab.org'
+#    receivers = ['faga@linuxlab.org']
+#    server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+#    server.login(sender, "redhat237")
+#    server.sendmail(sender, receivers, str(message_list))
+#alerts()
