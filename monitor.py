@@ -86,5 +86,5 @@ else:
     receivers = ['faga@linuxlab.org']
     server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
     server.login(sender, "redhat237")
-    server.sendmail(sender, receivers, str(message_list[]))
+    server.sendmail(sender, receivers, str(message_list))
 alerts()
