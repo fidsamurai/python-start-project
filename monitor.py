@@ -78,6 +78,7 @@ else:
     message_list.append(net_out_alert)
 
 print(str(message_list))
+
 #if message_list == "":
 #  pass
 #else:
