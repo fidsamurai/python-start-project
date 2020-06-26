@@ -5,6 +5,11 @@
 import time
 import psutil
 import smtplib
+from email.message import EmailMessage
+
+project_and_instance_name = 'test-stage' #Edit the name of the project name and environment
+sender = 'faga@linuxlab.org' #Email Address of the sender
+receivers = ['faga@linuxlab.org'] #comma seperated list of recipients enclosed in ''
 
 cpu_thresh = 50.0
 cpu_pct = psutil.cpu_percent(interval=1)
@@ -25,8 +30,8 @@ partition1 = '/'
 disk1 = psutil.disk_usage(partition1)
 disk_thresh = 85.0
 
-if disk_thresh <= disk1[3]:
-    disk_alert = print("Root volume usage warning", disk1[3], "% used")
+if disk_thresh >= disk1[3]:
+    disk_alert = f"Root volume usage warning {disk1[3]} % used"
 else:
     disk_alert = ""
 
@@ -45,47 +50,46 @@ def net_usage(inf = "eth0"):   #change the inf variable according to the interfa
   net_in_thresh = 1.5
   net_out_thresh = 1.5
   if net_in_res <= net_in_thresh:
-      net_in_alert = f"Current net-usage:IN:", net_in_res, "MB/s"
+      net_in_alert = f"Current net-usage:IN: {net_in_res} MB/s"
   else:
       net_in_alert = ""
   if net_out_res <= net_out_thresh:
-     net_out_alert = f"Current net-usage:OUT:", net_out_res, "MB/s"
+     net_out_alert = f"Current net-usage:OUT: {net_out_res} MB/s"
   else:
-      net_out_alert = "" 
+      net_out_alert = ""
 net_usage()
 
 message_list = []
 
-if cpu_alert == "":
+if cpu_alert == "" :
     pass
 else:
     message_list.append(cpu_alert)
-if mem_alert == "":
+if mem_alert == "" :
     pass
 else:
     message_list.append(mem_alert)
-if disk_alert == "":
+if disk_alert == "" :
     pass
 else:
     message_list.append(disk_alert)
-if net_in_alert == "":
+if net_in_alert == "" :
     pass
 else:
     message_list.append(net_in_alert)
-if net_out_alert == "":
+if net_out_alert == "" :
     pass
 else:
     message_list.append(net_out_alert)
 
-print(str(message_list))
+msg = '\n'.join(message_list)
 
-#if message_list == "":
-#  pass
-#else:
-#  def alerts():
-#    sender = 'faga@linuxlab.org'
-#    receivers = ['faga@linuxlab.org']
-#    server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-#    server.login(sender, "redhat237")
-#    server.sendmail(sender, receivers, str(message_list))
-#alerts()
+def alerts():
+  server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+  server.login(sender, "redhat237")
+  server.sendmail(sender,receivers,msg)
+
+if message_list == "":
+  pass
+else:
+  alerts()
