@@ -30,7 +30,7 @@ partition1 = '/'
 disk1 = psutil.disk_usage(partition1)
 disk_thresh = 85.0
 
-if disk_thresh >= disk1[3]:
+if disk_thresh <= disk1[3]:
     disk_alert = f"Root volume usage warning {disk1[3]} % used"
 else:
     disk_alert = ""
@@ -49,11 +49,11 @@ def net_usage(inf = "eth0"):   #change the inf variable according to the interfa
   net_out_res = round((net_out_2 - net_out_1) /1024 /1024, 2)
   net_in_thresh = 1.5
   net_out_thresh = 1.5
-  if net_in_res <= net_in_thresh:
+  if net_in_res >= net_in_thresh:
       net_in_alert = f"Current net-usage:IN: {net_in_res} MB/s"
   else:
       net_in_alert = ""
-  if net_out_res <= net_out_thresh:
+  if net_out_res >= net_out_thresh:
      net_out_alert = f"Current net-usage:OUT: {net_out_res} MB/s"
   else:
       net_out_alert = ""
@@ -83,13 +83,14 @@ else:
     message_list.append(net_out_alert)
 
 msg = '\n'.join(message_list)
+print(msg)
 
 def alerts():
   server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
   server.login(sender, "redhat237")
   server.sendmail(sender,receivers,msg)
 
-if message_list == "":
+if msg == "":
   pass
 else:
   alerts()
