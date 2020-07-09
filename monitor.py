@@ -4,8 +4,9 @@
 
 import time
 import psutil
-import smtplib
-from email.message import EmailMessage
+import smtplib, ssl
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 project_and_instance_name = 'test-stage' #Edit the name of the project name and environment
 sender = 'faga@linuxlab.org' #Email Address of the sender
@@ -86,9 +87,18 @@ msg = '\n'.join(message_list)
 print(msg)
 
 def alerts():
-  server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+  msg_template = MIMEMultipart()
+  msg_template['From'] = sender
+  msg_template['To'] = ', '.join(receivers)
+  msg_template['Subject'] = f"{project_and_instance_name} Alert"
+  msg_template.attach(MIMEText(msg, 'plain'))
+  server = smtplib.SMTP('smtp.gmail.com', 587)
+  server.ehlo()
+  server.starttls()
+  server.ehlo()
   server.login(sender, "redhat237")
-  server.sendmail(sender,receivers,msg)
+  server.sendmail(sender,receivers,msg_template.as_string())
+  server.quit()
 
 if msg == "":
   pass
